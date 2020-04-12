@@ -1,6 +1,6 @@
-# homebridge-servo-blinds
+# homebridge-blinds-servo
 
-`homebridge-servo-blinds` is a plugin for Homebridge that allows you to open or close your window blinds using a servo connected to a Raspberry Pi.
+`homebridge-blinds-servo` is a plugin for Homebridge that allows you to open or close your window blinds using a servo connected to a Raspberry Pi.
 
 ## Installation
 
@@ -11,9 +11,9 @@ Install homebridge:
 ```sh
 sudo npm install -g homebridge
 ```
-Install homebridge-servo-blinds:
+Install homebridge-blinds-servo:
 ```sh
-sudo npm install -g homebridge-servo-blinds
+sudo npm install -g homebridge-blinds-servo
 ```
 
 ## Configuration
@@ -22,7 +22,7 @@ Add the accessory in `config.json` in your home directory inside `.homebridge`.
 
 ```js
    {
-      "accessory": "BlindsCMD",
+      "accessory": "ServoBlinds",
       "name": "Dining Room Centre Blinds",
       "gpio_pin": 22,
       "servo_min": 4,
