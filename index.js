@@ -6,7 +6,7 @@ module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
 
-    homebridge.registerAccessory("homebridge-servo-blinds", "ServoBlinds", ServoBlindsAccessory);
+    homebridge.registerAccessory("homebridge-blinds-servo", "ServoBlinds", ServoBlindsAccessory);
 }
 
 function ServoBlindsAccessory(log, config) {

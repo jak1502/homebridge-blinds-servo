@@ -1,0 +1,26 @@
+{
+  "name": "homebridge-blinds-servo",
+  "version": "1.0.0",
+  "description": "Homebridge plugin to control blinds via a servo attached to a Raspberry Pi",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jak1502/homebridge-blinds-servo.git"
+  },
+  "keywords": [
+    "homebridge",
+    "servo",
+    "homebridge-plugin"
+  ],
+  "author": "jak1502",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jak1502/homebridge-blinds-servo/issues"
+  },
+  "homepage": "https://github.com/jak1502/homebridge-blinds-servo#readme"
+}
