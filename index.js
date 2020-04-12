@@ -75,7 +75,7 @@ function ServoBlindsAccessory(log, config) {
 
 }
 
-BlindsCMDAccessory.prototype.getCurrentPosition = function(callback) {
+ServoBlindsAccessory.prototype.getCurrentPosition = function(callback) {
     this.lastState(function(error, lPos) {
       if (error) {
         this.log('Unable to retrieve current position');
@@ -87,17 +87,17 @@ BlindsCMDAccessory.prototype.getCurrentPosition = function(callback) {
     }.bind(this));
 }
 
-BlindsCMDAccessory.prototype.getPositionState = function(callback) {
+ServoBlindsAccessory.prototype.getPositionState = function(callback) {
     if (this.ServoBlindsDebug) this.log("Requested PositionState: %s", this.currentPositionState);
     callback(null, this.currentPositionState);
 }
 
-BlindsCMDAccessory.prototype.getTargetPosition = function(callback) {
+ServoBlindsAccessory.prototype.getTargetPosition = function(callback) {
     if (this.ServoBlindsDebug) this.log("Requested TargetPosition: %s", this.currentTargetPosition);
     callback(null, this.currentTargetPosition);
 }
 
-BlindsCMDAccessory.prototype.setTargetPosition = function(pos, callback) {
+ServoBlindsAccessory.prototype.setTargetPosition = function(pos, callback) {
     if (this.ServoBlindsDebug) this.log("Set TargetPosition: %s", pos);
     this.currentTargetPosition = pos;
 
@@ -138,7 +138,7 @@ BlindsCMDAccessory.prototype.setTargetPosition = function(pos, callback) {
     }.bind(this));
 }
 
-BlindsCMDAccessory.prototype.lastState = function(callback) {
+ServoBlindsAccessory.prototype.lastState = function(callback) {
   if(this.stateCMD) {
     exec(this.stateCMD, function(error, stdout, stderr) {
       callback(error, parseInt(stdout));
@@ -148,7 +148,7 @@ BlindsCMDAccessory.prototype.lastState = function(callback) {
   }
 }
 
-BlindsCMDAccessory.prototype.cmdRequest = function(moveUp, cmd, pos, callback) {
+ServoBlindsAccessory.prototype.cmdRequest = function(moveUp, cmd, pos, callback) {
   this.currentPositionState = (moveUp ? Characteristic.PositionState.INCREASING : Characteristic.PositionState.DECREASING);
   this.service
     .setCharacteristic(Characteristic.PositionState, (moveUp ? Characteristic.PositionState.INCREASING : Characteristic.PositionState.DECREASING));
@@ -158,7 +158,7 @@ BlindsCMDAccessory.prototype.cmdRequest = function(moveUp, cmd, pos, callback) {
   });
 }
 
-BlindsCMDAccessory.prototype.getServices = function() {
+ServoBlindsAccessory.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
 
   informationService
