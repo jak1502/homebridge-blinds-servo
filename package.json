@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jak1502/homebridge-servo-blinds.git"
+    "url": "git+https://github.com/jak1502/homebridge-servo-blinds.git"
   },
   "author": "jak1502",
   "license": "MIT",
@@ -26,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/jak1502/homebridge-servo-blinds/issues"
   },
-  "homepage": "https://github.com/jak1502/homebridge-servo-blinds"
+  "homepage": "https://github.com/jak1502/homebridge-servo-blinds",
+  "devDependencies": {}
 }
