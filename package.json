@@ -1,6 +1,6 @@
 {
   "name": "homebridge-blinds-servo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Homebridge plugin to control blinds via a servo attached to a Raspberry Pi",
   "main": "index.js",
   "dependencies": {},
@@ -15,9 +15,6 @@
   "engines": {
     "node": ">4.0.0",
     "homebridge": ">=0.2.0"
-  },
-  "dependencies": {
-    "request": "^2.74.0"
   },
   "keywords": [
     "homebridge",
