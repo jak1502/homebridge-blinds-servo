@@ -1,0 +1,70 @@
+{
+  "pluginAlias": "ServoBlinds",
+  "pluginType": "accessory",
+  "singular": false,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "required": true,
+        "description": "The name of the blind"
+      },
+      "gpio_pin": {
+        "title": "GPIO Pin",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 27,
+        "required": true,
+        "description": "The GPIO pin the servo is attached to (BCM)"
+      },
+      "servo_min": {
+        "title": "Servo Min",
+        "type": "number",
+        "minimum": 2,
+        "maximum": 14,
+        "required": true,
+        "description": "The duty cycle that corresponds to 0% for the blind"
+      },
+      "servo_max": {
+        "title": "Servo Max",
+        "type": "number",
+        "minimum": 2,
+        "maximum": 14,
+        "required": true,
+        "description": "The duty cycle that corresponds to 100% for the blind"
+      },
+      "servo_time": {
+        "title": "Servo Move Time",
+        "type": "number",
+        "required": true,
+        "description": "The activation time for the servo"
+      },
+      "initial_position": {
+        "title": "Initial Position",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 100,
+        "required": false,
+        "description": "The inital position of the blind when homebridge initialises"
+      },
+      "exclusive": {
+        "title": "Run Command Exclusively",
+        "type": "boolean",
+        "required": false,
+        "description": "Run the command in serial - good for controlling multiple servos"
+      },
+      "relay_pin": {
+        "title": "Relay Pin",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 27,
+        "required": false,
+        "description": "The GPIO pin of the relay to tigger before controling the servo"
+      }
+    }
+  },
+  "form": null,
+  "display": null
+}
