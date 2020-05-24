@@ -25,8 +25,8 @@ function ServoBlindsAccessory(log, config) {
     this.servoMAX = config["servo_max"];
     this.servoMIN = config["servo_min"];
     this.gpioPIN = config["gpio_pin"];
-    this.moveCMD = config["move_cmd"] || (__dirname + "/" + "servoDriver.py");
-    this.servoTime = config["servo_time"];
+    this.moveCmd = config["move_cmd"] || (__dirname + "/" + "servoDriver.py");
+    this.servoTime = config["servo_time"] || "1";
     this.initialPos = config["intial_position"] || 0;
     this.exclusive = config["exclusive"] || 0;
     this.relayPin = config["relay_pin"] || 0;
@@ -109,7 +109,7 @@ ServoBlindsAccessory.prototype.setTargetPosition = function(pos, callback) {
         const moveUp = ((this.currentTargetPosition != 0) && (this.currentTargetPosition >= lPos));
         this.log((moveUp ? "Moving up" : "Moving down"));
 
-        this.cmdRequest(moveUp, this.moveCMD, pos, function(error, stdout, stderr) {
+        this.cmdRequest(moveUp, this.moveCmd, pos, function(error, stdout, stderr) {
           if (error) {
     	    this.log('Move function failed: %s', stderr);
 	    callback(error);
