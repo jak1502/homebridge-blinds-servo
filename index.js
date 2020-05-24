@@ -1,6 +1,7 @@
-var request = require("request");
+//var request = require("request");
 var exec = require("child_process").exec;
 var Service, Characteristic;
+
 
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
@@ -12,6 +13,7 @@ module.exports = function(homebridge) {
 function ServoBlindsAccessory(log, config) {
     // global vars
     this.log = log;
+    this.cmdArgs = [];
 
     // serial and manufacturer info
     this.serial = config["serial"] || "Default-SerialNumber";
@@ -24,10 +26,23 @@ function ServoBlindsAccessory(log, config) {
     this.servoMIN = config["servo_min"];
     this.gpioPIN = config["gpio_pin"];
     this.moveCMD = config["move_cmd"] || (__dirname + "/" + "servoDriver.py");
-    this.servoTIME = config["servo_time"];
-    this.stateCMD = config["state_cmd"];
-    this.initialPos = config["intial_position"] || 0 ;
+    this.servoTime = config["servo_time"];
+    this.initialPos = config["intial_position"] || 0;
+    this.exclusive = config["exclusive"] || 0;
+    this.relayPin = config["relay_pin"] || 0;
     this.ServoBlindsDebug = config["debug"] || 0;
+
+    // set cmd arguments
+    if (this.exclusive) {
+      this.cmdArgs.push('-e');
+      if (this.ServoBlindsDebug) this.log("Exclusive set, cmdArgs: %s", this.cmdArgs.join(' '));
+    }
+
+    if (this.relayPin) {
+      this.cmdArgs.push('-r');
+      this.cmdArgs.push(this.relayPin);
+      if (this.ServoBlindsDebug) this.log("Relay Pin set, cmdArgs: %s", this.cmdArgs.join(' '));
+    }
 
     // state vars
     this.lastPosition = this.initialPos; // last known position of the blinds, down by default
@@ -40,21 +55,6 @@ function ServoBlindsAccessory(log, config) {
     // initialize the current window state.
    this.service
        .setCharacteristic(Characteristic.PositionState, Characteristic.PositionState.STOPPED);
-
-   // initialize the current position based on external status information, if available.
-   if(this.stateCMD) {
-     this.lastState(function(error, lPos) {
-       if (error) {
-         this.log('Unable to initialize query current position');
-       } else {
-         this.service
-             .setCharacteristic(Characteristic.CurrentPosition, lPos);
-         this.service
-             .setCharacteristic(Characteristic.TargetPosition, lPos);
-         this.lastPosition = lPos;
-       }
-     }.bind(this));
-   }
 
     // the current position (0-100%)
     this.service
@@ -127,7 +127,13 @@ ServoBlindsAccessory.prototype.setTargetPosition = function(pos, callback) {
 
 	    if (this.ServoBlindsDebug) this.log('Move function succeeded.');
 	    callback(null);
-	    if (this.ServoBlindsDebug) this.log('Move command output: ' + stdout);
+      if (this.ServoBlindsDebug) {
+        this.stdoutput = stdout.split(/\r?\n/);
+        this.stdoutput.forEach(element => {
+          this.log('Script Output: ' + element);
+        });
+       
+          }
           }
 	    // just in case.
             this.currentPositionState = Characteristic.PositionState.STOPPED;
@@ -139,21 +145,15 @@ ServoBlindsAccessory.prototype.setTargetPosition = function(pos, callback) {
 }
 
 ServoBlindsAccessory.prototype.lastState = function(callback) {
-  if(this.stateCMD) {
-    exec(this.stateCMD, function(error, stdout, stderr) {
-      callback(error, parseInt(stdout));
-    });
-  } else {
-    callback(null, this.lastPosition);
-  }
+  callback(null, this.lastPosition);
 }
 
 ServoBlindsAccessory.prototype.cmdRequest = function(moveUp, cmd, pos, callback) {
   this.currentPositionState = (moveUp ? Characteristic.PositionState.INCREASING : Characteristic.PositionState.DECREASING);
   this.service
     .setCharacteristic(Characteristic.PositionState, (moveUp ? Characteristic.PositionState.INCREASING : Characteristic.PositionState.DECREASING));
-
-  exec(cmd + ' ' + this.gpioPIN + ' ' + pos + ' ' + this.servoMIN + ' ' + this.servoMAX + ' ' + this.servoTIME, function(error, stdout, stderr) {
+  if (this.ServoBlindsDebug) this.log('Calling command: ' + cmd + ' ' + this.gpioPIN + ' ' + pos + ' ' + this.servoMIN + ' ' + this.servoMAX + ' ' + this.servoTime + ' ' + this.cmdArgs.join(' '));
+  exec(cmd + ' ' + this.gpioPIN + ' ' + pos + ' ' + this.servoMIN + ' ' + this.servoMAX + ' ' + this.servoTime + ' ' + this.cmdArgs.join(' '), function(error, stdout, stderr) {
     callback(error, stdout, stderr)
   });
 }
