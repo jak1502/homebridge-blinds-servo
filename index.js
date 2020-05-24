@@ -27,7 +27,7 @@ function ServoBlindsAccessory(log, config) {
     this.gpioPIN = config["gpio_pin"];
     this.moveCmd = config["move_cmd"] || (__dirname + "/" + "servoDriver.py");
     this.servoTime = config["servo_time"] || "1";
-    this.initialPos = config["intial_position"] || 0;
+    this.initialPos = config["initial_position"] || 0;
     this.exclusive = config["exclusive"] || 0;
     this.relayPin = config["relay_pin"] || 0;
     this.ServoBlindsDebug = config["debug"] || 0;
